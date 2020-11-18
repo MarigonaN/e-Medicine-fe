@@ -1,24 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
 
+import Login from "./components/Login";
+import Register from "./components/Register";
+import Todos from "./components/Todos";
+import "./App.css";
+import Home from "./pages/Home";
+import Admin from "./components/Admin";
+import PrivateRoute from "./hocs/PrivateRoute";
+import UnPrivateRoute from "./hocs/UnPrivateRoute";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+
+import Pharm from "./components/Pharm";
+import Covid19 from "./components/animations/Covid19";
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Router>
+        <Route exact path="/" component={Home} />
+        <UnPrivateRoute path="/Covid19" component={Covid19} />
+        <UnPrivateRoute path="/login" component={Login} />
+        <UnPrivateRoute path="/register" component={Register} />
+
+        <PrivateRoute
+          path="/todos"
+          roles={["user", "admin"]}
+          component={Todos}
+        />
+        <PrivateRoute
+          path="/pharmacy"
+          roles={["user", "admin"]}
+          component={Pharm}
+        />
+
+        <PrivateRoute path="/admin" roles={["admin"]} component={Admin} />
+      </Router>
     </div>
   );
 }
